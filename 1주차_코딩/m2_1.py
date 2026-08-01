@@ -36,7 +36,7 @@ class QuizGame:
     def menu(self):
         #메뉴를 출력한다.
         print("1.퀴즈 풀기","2. 퀴즈 추가","3. 퀴즈 목록","4. 점수 확인","5. 종료",sep="\n")
-        a=int(input("선택 : "))
+        a=int(input("선택 매뉴3 : "))
         match a:
             case 1:
                 self.view_quiz()
@@ -69,19 +69,22 @@ class QuizGame:
     def import_quiz(self):
         #문제를 추가한다.
         print("문제를 입력하세요: ")
-        more_choices = input("선택지를 입력하세요 (쉼표로 구분): ").split(",")
+        more_question = input("문제: ")
+        more_choices = input("선택지를 입력하세요 (쉼표로 구분): ")
         print("정답 번호를 입력하세요: ")
-        more_answer = int(input("정답 번호: "))
-        self.quiz_choices.append(more_choices)
-        self.quiz_answer.append(more_answer)
-        self.quiz.MaxPoint += 1  
+        more_answer = int(input("정답: "))
+        self.quiz.quiz_number.append(more_question)
+        self.quiz.quiz_choices.append(more_choices)
+        self.quiz.quiz_answer.append(more_answer)
+        self.MaxPoint += 1
+        self.save_data()  
         self.menu()  
     
     def view_list(self):
         #문제 목록을 출력한다.
-        for i in range(len(self.quiz.MaxPoint)):
-            print("문제",1+1, "\n",self.quiz.quiz_number[i],"\n")
-        if self.quiz.MaxPoint==0:
+        for i in range(len(self.quiz.quiz_number)):
+            print("문제",i+1, "\n",self.quiz.quiz_number[i],"\n")
+        if self.MaxPoint==0:
             print("등록된 문제가 없습니다.")
         self.menu()
             
@@ -93,8 +96,27 @@ class QuizGame:
             print("최고 점수 갱신!")
             self.menu()
             
-    
+    def save_data(self):
+        #state.json에 저장
+        data = {
+            "quiz_number": self.quiz.quiz_number,
+            "quiz_choices": self.quiz.quiz_choices,
+            "quiz_answer": self.quiz.quiz_answer,
+            "MaxPoint": self.serverPoint
+        }
+        with open("QuizData.json", "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
 
+    def load_data(self):
+        #QuizData.json에서 불러오기
+        if os.path.exists("QuizData.json"):
+            with open("QuizData.json", "r", encoding="utf-8") as f:
+                data = json.load(f)
+            self.quiz.quiz_number = data.get("quiz_number", [])
+            self.quiz.quiz_choices = data.get("quiz_choices", [])
+            self.quiz.quiz_answer = data.get("quiz_answer", [])
+            self.serverPoint = data.get("MaxPoint", 0)
+            
 #퀴즈 시작
 person = QuizGame()
 person.menu()
