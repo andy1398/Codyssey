@@ -53,12 +53,22 @@ class QuizGame:
     def view_quiz(self):
         #문제와 선택지를 출력한다.
         print("문제를 선택하세요 (1~5): ")
-        n=int(input("선택 : ").strip())-1
+        try:
+            n=int(input("선택 : ").strip())-1
+        except ValueError:
+            print("잘못된 입력입니다.")
+            self.menu()
+            return
         self.quiz.display(n)
         
         #정답을 입력받는다.
         print("정답을 입력하세요: ")
-        AW=int(input("정답: ").strip())
+        try:
+            AW=int(input("정답: ").strip())
+        except ValueError:
+            print("잘못된 입력입니다.")
+            self.menu()
+            return
         self.MaxPoint=self.quiz.check_answer(AW,n)
         
         print("(1: 계속 문제풀기, 2: 메뉴로 가기)")
