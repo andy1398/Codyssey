@@ -36,7 +36,7 @@ class QuizGame:
     def menu(self):
         #메뉴를 출력한다.
         print("1.퀴즈 풀기","2. 퀴즈 추가","3. 퀴즈 목록","4. 점수 확인","5. 종료",sep="\n")
-        a=int(input("선택 매뉴3 : "))
+        a=int(input("선택 매뉴3 : ").strip())
         match a:
             case 1:
                 self.view_quiz()
@@ -53,14 +53,16 @@ class QuizGame:
     def view_quiz(self):
         #문제와 선택지를 출력한다.
         print("문제를 선택하세요 (1~5): ")
-        n=int(input("선택 : "))-1
-        self.quiz.display(n)  
+        n=int(input("선택 : ").strip())-1
+        self.quiz.display(n)
+        
         #정답을 입력받는다.
         print("정답을 입력하세요: ")
-        AW=int(input("정답: "))
+        AW=int(input("정답: ").strip())
         self.MaxPoint=self.quiz.check_answer(AW,n)
+        
         print("(1: 계속 문제풀기, 2: 메뉴로 가기)")
-        a=int(input("선택 : "))
+        a=int(input("선택 : ").strip())
         if a==1:
             self.view_quiz()
         else:
@@ -69,10 +71,10 @@ class QuizGame:
     def import_quiz(self):
         #문제를 추가한다.
         print("문제를 입력하세요: ")
-        more_question = input("문제: ")
-        more_choices = input("선택지를 입력하세요 (쉼표로 구분): ")
+        more_question = input("문제: ").strip()
+        more_choices = input("선택지를 입력하세요 (쉼표로 구분): ").strip()
         print("정답 번호를 입력하세요: ")
-        more_answer = int(input("정답: "))
+        more_answer = int(input("정답: ").strip())
         self.quiz.quiz_number.append(more_question)
         self.quiz.quiz_choices.append(more_choices)
         self.quiz.quiz_answer.append(more_answer)
@@ -104,13 +106,13 @@ class QuizGame:
             "quiz_answer": self.quiz.quiz_answer,
             "MaxPoint": self.serverPoint
         }
-        with open("QuizData.json", "w", encoding="utf-8") as f:
+        with open("state.json", "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
     def load_data(self):
-        #QuizData.json에서 불러오기
-        if os.path.exists("QuizData.json"):
-            with open("QuizData.json", "r", encoding="utf-8") as f:
+        #state.json에서 불러오기
+        if os.path.exists("state.json"):
+            with open("state.json", "r", encoding="utf-8") as f:
                 data = json.load(f)
             self.quiz.quiz_number = data.get("quiz_number", [])
             self.quiz.quiz_choices = data.get("quiz_choices", [])
