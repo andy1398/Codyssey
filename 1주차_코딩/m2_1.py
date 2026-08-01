@@ -37,6 +37,9 @@ class QuizGame:
         #메뉴를 출력한다.
         print("1.퀴즈 풀기","2. 퀴즈 추가","3. 퀴즈 목록","4. 점수 확인","5. 종료",sep="\n")
         a=self.Exception_handling()
+        if a<0 or a>5:
+            print("잘못된 입력입니다. 다시 입력해 주세요.")
+            self.menu()
 
         match a:
             case 1:
@@ -55,11 +58,11 @@ class QuizGame:
         #문제와 선택지를 출력한다.
         print("문제를 선택하세요 : ")
         n=self.Exception_handling()
-        if 0 <= n < len(self.quiz.quiz_number):
-            pass
-        else:
+        
+        if 0 > n or n >= len(self.quiz.quiz_number):
             print("잘못된 입력입니다. 다시 입력해 주세요.")
             self.view_quiz()
+            
         self.quiz.display(n)
         
         #정답을 입력받는다.
@@ -68,7 +71,7 @@ class QuizGame:
         self.MaxPoint=self.quiz.check_answer(AW,n)
         
         print("(1: 계속 문제풀기, 2: 메뉴로 가기)")
-        a=int(input("선택 : ").strip())
+        a=self.Exception_handling()
         if a==1:
             self.view_quiz()
         else:
@@ -78,7 +81,10 @@ class QuizGame:
         #문제를 추가한다.
         print("문제를 입력하세요: ")
         more_question = input("문제: ").strip()
+        self.empty_string(more_question)
+        
         more_choices = input("선택지를 입력하세요 (쉼표로 구분): ").strip()
+        self.empty_string(more_choices)
         print("정답 번호를 입력하세요: ")
         more_answer = self.Exception_handling()
 
@@ -103,7 +109,7 @@ class QuizGame:
         if self.MaxPoint > self.serverPoint:
             self.serverPoint = self.MaxPoint
             print("최고 점수 갱신!")
-            self.menu()
+        self.menu()
             
     def save_data(self):
         #state.json에 저장
@@ -126,9 +132,16 @@ class QuizGame:
             self.quiz.quiz_answer = data.get("quiz_answer", [])
             self.serverPoint = data.get("MaxPoint", 0)
             
-            
+    def empty_string(self,str):
+        if not str:
+            print("입력하지 않았습니다. 다시 시도해주세요.")
+            moo=input("입력: ").strip()
+            self.empty_string(moo)
+            return True
+        return False
+
     def Exception_handling(self):
-        #예외처리
+        #예외처리(엔터,문자열)
         while True: 
             try:
                 ExcepNum=int(input("선택 : ").strip())
