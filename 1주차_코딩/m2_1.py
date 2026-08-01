@@ -36,7 +36,8 @@ class QuizGame:
     def menu(self):
         #메뉴를 출력한다.
         print("1.퀴즈 풀기","2. 퀴즈 추가","3. 퀴즈 목록","4. 점수 확인","5. 종료",sep="\n")
-        a=int(input("선택 매뉴3 : ").strip())
+        a=self.Exception_handling()
+
         match a:
             case 1:
                 self.view_quiz()
@@ -52,23 +53,18 @@ class QuizGame:
         
     def view_quiz(self):
         #문제와 선택지를 출력한다.
-        print("문제를 선택하세요 (1~5): ")
-        try:
-            n=int(input("선택 : ").strip())-1
-        except ValueError:
-            print("잘못된 입력입니다.")
-            self.menu()
-            return
+        print("문제를 선택하세요 : ")
+        n=self.Exception_handling()
+        if 0 <= n < len(self.quiz.quiz_number):
+            pass
+        else:
+            print("잘못된 입력입니다. 다시 입력해 주세요.")
+            self.view_quiz()
         self.quiz.display(n)
         
         #정답을 입력받는다.
         print("정답을 입력하세요: ")
-        try:
-            AW=int(input("정답: ").strip())
-        except ValueError:
-            print("잘못된 입력입니다.")
-            self.menu()
-            return
+        AW=self.Exception_handling()
         self.MaxPoint=self.quiz.check_answer(AW,n)
         
         print("(1: 계속 문제풀기, 2: 메뉴로 가기)")
@@ -84,7 +80,8 @@ class QuizGame:
         more_question = input("문제: ").strip()
         more_choices = input("선택지를 입력하세요 (쉼표로 구분): ").strip()
         print("정답 번호를 입력하세요: ")
-        more_answer = int(input("정답: ").strip())
+        more_answer = self.Exception_handling()
+
         self.quiz.quiz_number.append(more_question)
         self.quiz.quiz_choices.append(more_choices)
         self.quiz.quiz_answer.append(more_answer)
@@ -128,6 +125,17 @@ class QuizGame:
             self.quiz.quiz_choices = data.get("quiz_choices", [])
             self.quiz.quiz_answer = data.get("quiz_answer", [])
             self.serverPoint = data.get("MaxPoint", 0)
+            
+            
+    def Exception_handling(self):
+        #예외처리
+        while True: 
+            try:
+                ExcepNum=int(input("선택 : ").strip())
+                return ExcepNum
+                break
+            except ValueError:
+                print("잘못된 입력입니다.")
             
 #퀴즈 시작
 person = QuizGame()
