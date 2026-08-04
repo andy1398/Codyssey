@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 #어떤 문제를 선택했는지, 어떤 선택지를 선택했는지, 어떤 정답을 선택했는지 알아야되.
 class Quiz:
@@ -129,6 +130,7 @@ class QuizGame:
     def load_data(self):
         #state.json에서 불러오기
         if os.path.exists("state.json"):
+            
             with open("state.json", "r", encoding="utf-8") as f:
                 data = json.load(f)
                 
@@ -155,10 +157,23 @@ class QuizGame:
             try:
                 ExcepNum=int(input("선택 : ").strip())
                 return ExcepNum
-                break
             except ValueError:
                 print("잘못된 입력입니다.")
             
 #퀴즈 시작
 person = QuizGame()
-person.menu()
+
+try:
+    person.menu()
+except (KeyboardInterrupt, EOFError):
+        # 어느 순간에 Ctrl+C나 입력 종료가 들어와도 이쪽으로 튕겨 나옵니다.
+        print("\n\n 프로그램이 강제 중단되었습니다.")
+
+        try:
+            person.save_data()  # self 대신 생성한 game 인스턴스 사용
+            print("현재 상태를 state.json에 안전하게 저장했습니다.")
+        except Exception as e:
+            print(f"데이터 저장 중 오류가 발생했습니다: {e}")
+
+        print("👋 프로그램을 안전하게 종료합니다.")
+        sys.exit(0)
