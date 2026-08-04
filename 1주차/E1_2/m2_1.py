@@ -4,16 +4,16 @@ import os
 #어떤 문제를 선택했는지, 어떤 선택지를 선택했는지, 어떤 정답을 선택했는지 알아야되.
 class Quiz:
     
-    def __init__(self,question, choices, answer):
-        self.quiz_number = question
-        self.quiz_choices = choices
-        self.quiz_answer = answer
-
+    def __init__(self):
+        self.quiz_number = ["1+1 = ?","France의 수도는?","Python의 개발자는?","JavaScript의 창시자는?","C언어의 창시자는?"]
+        self.quiz_choices = [["1번. 1","2번. 2","3번. 3","4번. 4"],["1번. London","2번. Berlin","3번. Paris","4번. Madrid"],["1번. Guido van Rossum","2번. James Gosling","3번. Brendan Eich","4번. Dennis Ritchie"],["1번. Brendan Eich","2번. Guido van Rossum","3번. James Gosling","4번. Dennis Ritchie"],["1번. Dennis Ritchie","2번. Brendan Eich","3번. Guido van Rossum","4번. James Gosling"]]
+        self.quiz_answer = [2,3,1,1,1]
+    
     #선택한 문제 출력
     def display(self, number):
         print("문제: ",number+1)
-        print(self.quiz_number)
-        print(self.quiz_choices, sep="\n")
+        print(self.quiz_number[number])
+        print(*self.quiz_choices[number], sep="\n")
     
     def check_answer(self, user_answer,n):
         #정답 여부 확인
@@ -31,43 +31,12 @@ class QuizGame:
         self.Qnumber = 5
         self.MaxPoint = 0
         self.serverPoint = 0
-        if not self.load_data():
-            self.quiz_init()
-        self.quiz=Quiz(self)
+        self.quiz=Quiz()
+        if os.path.exists("state.json"):
+            self.load_data()
+        else:
+            self.save_data()
         
-    
-    def quiz_init(self):
-        self.quiz_list = [
-            Quiz(
-                "1+1 = ?",
-                ["1번. 1", "2번. 2", "3번. 3", "4번. 4"],
-                2
-                ),
-            (
-                "France의 수도는?",
-                ["1번. London","2번. Berlin","3번. Paris","4번. Madrid",    ],
-                3,
-            ),
-            (
-                "Python의 개발자는?",
-                ["1번. Guido van Rossum","2번. James Gosling","3번. Brendan Eich","4번. Dennis Ritchie",],
-                1,
-            ),
-            (
-                "JavaScript의 창시자는?",
-                ["1번. Brendan Eich","2번. Guido van Rossum","3번. James Gosling","4번. Dennis Ritchie",],
-                1,
-            ),
-            (
-                "C언어의 창시자는?",
-                ["1번. Dennis Ritchie","2번. Brendan Eich","3번. Guido van Rossum","4번. James Gosling",],
-                1,
-            ),
-        ]
-        self.quiz_number = ["1+1 = ?","France의 수도는?","Python의 개발자는?","JavaScript의 창시자는?","C언어의 창시자는?"]
-        self.quiz_choices = [["1번. 1","2번. 2","3번. 3","4번. 4"],["1번. London","2번. Berlin","3번. Paris","4번. Madrid"],["1번. Guido van Rossum","2번. James Gosling","3번. Brendan Eich","4번. Dennis Ritchie"],["1번. Brendan Eich","2번. Guido van Rossum","3번. James Gosling","4번. Dennis Ritchie"],["1번. Dennis Ritchie","2번. Brendan Eich","3번. Guido van Rossum","4번. James Gosling"]]
-        self.quiz_answer = [2,3,1,1,1]
-    
     def menu(self):
         #메뉴를 출력한다.
         print("1.퀴즈 풀기","2. 퀴즈 추가","3. 퀴즈 목록","4. 점수 확인","5. 종료",sep="\n")
@@ -128,8 +97,8 @@ class QuizGame:
         self.quiz.quiz_answer.append(more_answer)
         self.MaxPoint += 1
         self.save_data()  
-        self.menu()  
-    
+        print("성공적으로 저장되었습니다!")    
+        
     def view_list(self):
         #문제 목록을 출력한다.
         for i in range(len(self.quiz.quiz_number)):
@@ -162,9 +131,14 @@ class QuizGame:
         if os.path.exists("state.json"):
             with open("state.json", "r", encoding="utf-8") as f:
                 data = json.load(f)
-            self.quiz.quiz_number = data.get("quiz_number", [])
-            self.quiz.quiz_choices = data.get("quiz_choices", [])
-            self.quiz.quiz_answer = data.get("quiz_answer", [])
+                
+            #self.quiz.quiz_number = data.get("quiz_number", [])
+            #self.quiz.quiz_choices = data.get("quiz_choices", [])
+            #self.quiz.quiz_answer = data.get("quiz_answer", [])
+            #아래처럼 하면 파일 손상되어도 5개 문제 보존
+            self.quiz.quiz_number = data.get("quiz_number", self.quiz.quiz_number)
+            self.quiz.quiz_choices = data.get("quiz_choices", self.quiz.quiz_choices)
+            self.quiz.quiz_answer = data.get("quiz_answer", self.quiz.quiz_answer)
             self.serverPoint = data.get("MaxPoint", 0)
             
     def empty_string(self,str):
@@ -188,5 +162,3 @@ class QuizGame:
 #퀴즈 시작
 person = QuizGame()
 person.menu()
-
-#브랜치 채크용
