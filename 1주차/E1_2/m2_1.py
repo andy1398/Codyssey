@@ -40,7 +40,7 @@ class QuizGame:
         
     def menu(self):
         #메뉴를 출력한다.
-        print("1.퀴즈 풀기","2. 퀴즈 추가","3. 퀴즈 목록","4. 점수 확인","5. 종료",sep="\n")
+        print("1.퀴즈 풀기","2. 퀴즈 추가","3. 퀴즈 목록","4. 점수 확인","5. 도전할 문제 개수","6. 종료",sep="\n")
         a=self.Exception_handling()
         if a<0 or a>5:
             print("잘못된 입력입니다. 다시 입력해 주세요.")
@@ -56,6 +56,8 @@ class QuizGame:
             case 4:
                 self.view_score()
             case 5:
+                self.how_many_questions()
+            case 6:
                 print("종료합니다.")
             
         
@@ -159,6 +161,18 @@ class QuizGame:
                 return ExcepNum
             except ValueError:
                 print("잘못된 입력입니다.")
+                
+    def how_many_questions(self):
+        #도전할 문제 개수를 설정한다.
+        print("도전할 문제 개수를 입력하세요: ")
+        num_questions = self.Exception_handling()
+        if num_questions <= 0 or num_questions > len(self.quiz.quiz_number):
+            print("잘못된 입력입니다. 다시 입력해 주세요.")
+            self.how_many_questions()
+        else:
+            self.Qnumber = num_questions
+            print(f"도전할 문제 개수가 {self.Qnumber}개로 설정되었습니다.")
+            self.menu()
             
 #퀴즈 시작
 person = QuizGame()
@@ -177,3 +191,6 @@ except (KeyboardInterrupt, EOFError):
 
         print(" 프로그램을 안전하게 종료합니다.")
         sys.exit(0)
+        
+#모든 문제를 풀면 결과를 표시한다. <--> 퀴즈를 풀 때마다 최고 점수와 비교하고 갱신한다.
+#
