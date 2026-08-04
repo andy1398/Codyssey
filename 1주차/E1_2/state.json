@@ -1,0 +1,52 @@
+{
+  "quiz_number": [
+    "1+1 = ?",
+    "France의 수도는?",
+    "Python의 개발자는?",
+    "JavaScript의 창시자는?",
+    "C언어의 창시자는?",
+    "qwe"
+  ],
+  "quiz_choices": [
+    [
+      "1번. 1",
+      "2번. 2",
+      "3번. 3",
+      "4번. 4"
+    ],
+    [
+      "1번. London",
+      "2번. Berlin",
+      "3번. Paris",
+      "4번. Madrid"
+    ],
+    [
+      "1번. Guido van Rossum",
+      "2번. James Gosling",
+      "3번. Brendan Eich",
+      "4번. Dennis Ritchie"
+    ],
+    [
+      "1번. Brendan Eich",
+      "2번. Guido van Rossum",
+      "3번. James Gosling",
+      "4번. Dennis Ritchie"
+    ],
+    [
+      "1번. Dennis Ritchie",
+      "2번. Brendan Eich",
+      "3번. Guido van Rossum",
+      "4번. James Gosling"
+    ],
+    "asd"
+  ],
+  "quiz_answer": [
+    2,
+    3,
+    1,
+    1,
+    1,
+    1
+  ],
+  "MaxPoint": 0
+}
