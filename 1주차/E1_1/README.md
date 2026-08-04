@@ -56,7 +56,10 @@ indec.html 의 내용이다.
 6. 포트 매핑 및 접속 증거
 <img width="581" height="716" alt="Image" src="https://github.com/user-attachments/assets/6a9abb2a-7a72-4d5b-be61-29724f8e4425" />
 포트 맵핑을 했다. -p 옵션이 필요하다. 기존에 실습한 내용잉 있어 생성할때 기존의 이름과 일치한다는 에러가 떠서 기존을 지우고 생성하였다. 
+<img width="583" height="166" alt="Image" src="https://github.com/user-attachments/assets/c545989c-8aa0-4117-b7f2-7759e0efa181" />
 
+<img width="1512" height="142" alt="Image" src="https://github.com/user-attachments/assets/8653df53-49f6-49be-994f-e4a591f9ee05" />
+실습을 통해 실제 뜬 화면이다. 
 7. Docker 볼륨 영속성 검증
 ![Image](https://github.com/user-attachments/assets/b87a45c7-c823-4479-814d-28d0faaad928)
 도커에서 볼륨을 생성하고, "This data will survive" 을 볼륨에 넣었다. 컨테이너를 실행하고 컨테이너를 지우고 다시 출력한 결과 전후 모두 같은 내용을 출력한다. 이를 통해 도커에서 컨테이너를 지워도 볼륨의 내용이 지워지지 않는다는 점을 알수 있다. 
