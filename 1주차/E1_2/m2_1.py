@@ -175,5 +175,5 @@ except (KeyboardInterrupt, EOFError):
         except Exception as e:
             print(f"데이터 저장 중 오류가 발생했습니다: {e}")
 
-        print("👋 프로그램을 안전하게 종료합니다.")
+        print(" 프로그램을 안전하게 종료합니다.")
         sys.exit(0)
