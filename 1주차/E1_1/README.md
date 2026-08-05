@@ -27,7 +27,9 @@ nginx 이미지를 베이스(출발점)로 삼겠다
     docker: 29.6.2
 # 3. 수행항목 (기능요구사항))
 1. 터미널 조작
+
 <img width="583" height="875" alt="Image" src="https://github.com/user-attachments/assets/69f7ba36-5afc-4bc5-a752-45ae5951f077" />
+
 <img width="579" height="152" alt="Image" src="https://github.com/user-attachments/assets/31e9d502-6e16-4561-9c64-e3bcde1011bd" />
 
 2. 권한 실습
@@ -43,20 +45,25 @@ nginx 이미지를 베이스(출발점)로 삼겠다
 <img width="581" height="365" alt="Image" src="https://github.com/user-attachments/assets/0164164e-87f6-40eb-ac10-52a2cf67db9b" />
 
 도커에서 ps 와 ps -a 의 차이점이다. -a 옵션을 붙이면 숨겨진 파일까지 볼 수 있다. 
+
 <img width="579" height="259" alt="Image" src="https://github.com/user-attachments/assets/98db12e1-323e-4b78-ae8c-299bb0f757cf" />
 
 도커의 로그 기록을 살펴보았다. 
+
 <img width="579" height="179" alt="Image" src="https://github.com/user-attachments/assets/73586861-0aad-4da9-a9a3-a260ab75e5f1" />
 
 현재 설치된 도커 엔진의 전체적인 상태와 시스템 정보를 확인했다.  
 
 5. 기존 Dockerfile 기반 커스텀 이미지 제작
+
 <img width="581" height="460" alt="Image" src="https://github.com/user-attachments/assets/1dc0c174-5818-4151-b3d3-788cdb56a2a8" />
 
 index.html, Dockerfile를 만들어 도커 이미지를 만들었다 . [+] Building 0.1s (7/7) FINISHED 이것은 성공적으로 이미지가 완성되었다는 의미이다. 
+
 <img width="547" height="126" alt="Image" src="https://github.com/user-attachments/assets/40cc1cdb-2130-4f47-8d0f-0353caac853d" />
 
 도커파일의 내용이다. 
+
 <img width="547" height="126" alt="Image" src="https://github.com/user-attachments/assets/618221da-6d03-4a15-ae39-88b24758a5ef" />
 
 indec.html 의 내용이다. 
@@ -65,6 +72,7 @@ indec.html 의 내용이다.
 <img width="581" height="716" alt="Image" src="https://github.com/user-attachments/assets/6a9abb2a-7a72-4d5b-be61-29724f8e4425" />
 
 포트 맵핑을 했다. -p 옵션이 필요하다. 기존에 실습한 내용잉 있어 생성할때 기존의 이름과 일치한다는 에러가 떠서 기존을 지우고 생성하였다. 
+
 <img width="583" height="166" alt="Image" src="https://github.com/user-attachments/assets/c545989c-8aa0-4117-b7f2-7759e0efa181" />
 
 <img width="1512" height="142" alt="Image" src="https://github.com/user-attachments/assets/8653df53-49f6-49be-994f-e4a591f9ee05" />
