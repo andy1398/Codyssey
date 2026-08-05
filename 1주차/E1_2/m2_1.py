@@ -12,23 +12,25 @@ class Quiz:
     
     #선택한 문제 출력
     def display(self, number):
-        print("문제: ",number+1)
-        print(self.quiz_number[number])
-        print(*self.quiz_choices[number], sep="\n")
+        print("\n문제를 출력합니다.")
+        print("문제: ",number)
+        print(self.quiz_number[number-1])
+        print(*self.quiz_choices[number-1], sep="\n")
     
     def check_answer(self, user_answer,n):
         #정답 여부 확인
-        if(user_answer == self.quiz_answer[n]):
-            print("정답입니다.")
+        if(user_answer == self.quiz_answer[n-1]):
+            print("\n정답입니다.")
             return 1
         else:
-            print("틀렸습니다.")
+            print("\n틀렸습니다.")
             return 0
 
 #게임 전체 관리         
 class QuizGame:
             
     def __init__(self):
+        self.how_many = 0
         self.Qnumber = 5
         self.MaxPoint = 0
         self.serverPoint = 0
@@ -40,9 +42,9 @@ class QuizGame:
         
     def menu(self):
         #메뉴를 출력한다.
-        print("1.퀴즈 풀기","2. 퀴즈 추가","3. 퀴즈 목록","4. 점수 확인","5. 도전할 문제 개수","6. 종료",sep="\n")
+        print("\n메뉴","1. 퀴즈 풀기","2. 퀴즈 추가","3. 퀴즈 목록","4. 점수 확인","5. 문제 개수 설정","6. 종료",sep="\n")
         a=self.Exception_handling()
-        if a<0 or a>5:
+        if a<0 or a>6:
             print("잘못된 입력입니다. 다시 입력해 주세요.")
             self.menu()
 
@@ -56,17 +58,17 @@ class QuizGame:
             case 4:
                 self.view_score()
             case 5:
-                self.how_many_questions()
+                self.how_many_quiz()
             case 6:
                 print("종료합니다.")
             
         
     def view_quiz(self):
         #문제와 선택지를 출력한다.
-        print("문제를 선택하세요 : ")
+        print("\n문제를 선택하세요 : ")
         n=self.Exception_handling()
         
-        if 0 > n or n >= len(self.quiz.quiz_number):
+        if 0 > n or n > len(self.quiz.quiz_number):
             print("잘못된 입력입니다. 다시 입력해 주세요.")
             self.view_quiz()
             
@@ -77,16 +79,21 @@ class QuizGame:
         AW=self.Exception_handling()
         self.MaxPoint=self.quiz.check_answer(AW,n)
         
-        print("(1: 계속 문제풀기, 2: 메뉴로 가기)")
-        a=self.Exception_handling()
-        if a==1:
-            self.view_quiz()
+        if self.how_many==0: #목표 문제개수 풀음
+            return self.menu()
         else:
-            self.menu()
+            self.how_many -= 1
+            self.view_quiz()
+        #print("(1: 계속 문제풀기, 2: 메뉴로 가기)")
+        #a=self.Exception_handling()
+        #if a==1:
+        #    self.view_quiz()
+        #else:
+        #    self.menu()
             
     def import_quiz(self):
         #문제를 추가한다.
-        print("문제를 입력하세요: ")
+        print("\n문제를 입력하세요: ")
         more_question = input("문제: ").strip()
         self.empty_string(more_question)
         
@@ -100,19 +107,18 @@ class QuizGame:
         self.quiz.quiz_answer.append(more_answer)
         self.MaxPoint += 1
         self.save_data()  
-        print("성공적으로 저장되었습니다!")    
+        print("성공적으로 저장되었습니다!") 
+        self.menu()   
         
     def view_list(self):
         #문제 목록을 출력한다.
         for i in range(len(self.quiz.quiz_number)):
             print("문제",i+1, "\n",self.quiz.quiz_number[i],"\n")
-        if self.MaxPoint==0:
-            print("등록된 문제가 없습니다.")
         self.menu()
             
     def view_score(self):
         #점수를 출력한다.
-        print("점수: ",self.MaxPoint)
+        print("\n점수: ",self.MaxPoint)
         if self.MaxPoint > self.serverPoint:
             self.serverPoint = self.MaxPoint
             print("최고 점수 갱신!")
@@ -144,10 +150,21 @@ class QuizGame:
             self.quiz.quiz_choices = data.get("quiz_choices", self.quiz.quiz_choices)
             self.quiz.quiz_answer = data.get("quiz_answer", self.quiz.quiz_answer)
             self.serverPoint = data.get("MaxPoint", 0)
+    
+    #문제를 몇개 풀거니?
+    def how_many_quiz(self):
+        print("\n몇 문제를 풀고 싶으신가요?")
+        print("현재 문제 개수: " ,len(self.quiz.quiz_number))
+        n=self.Exception_handling()
+        self.how_many = n
+        self.view_quiz() 
+    
+    
             
+#공백 예외처리            
     def empty_string(self,str):
         if not str:
-            print("입력하지 않았습니다. 다시 시도해주세요.")
+            print("\n입력하지 않았습니다. 다시 시도해주세요.")
             moo=input("입력: ").strip()
             self.empty_string(moo)
             return True
@@ -161,18 +178,6 @@ class QuizGame:
                 return ExcepNum
             except ValueError:
                 print("잘못된 입력입니다.")
-                
-    def how_many_questions(self):
-        #도전할 문제 개수를 설정한다.
-        print("도전할 문제 개수를 입력하세요: ")
-        num_questions = self.Exception_handling()
-        if num_questions <= 0 or num_questions > len(self.quiz.quiz_number):
-            print("잘못된 입력입니다. 다시 입력해 주세요.")
-            self.how_many_questions()
-        else:
-            self.Qnumber = num_questions
-            print(f"도전할 문제 개수가 {self.Qnumber}개로 설정되었습니다.")
-            self.menu()
             
 #퀴즈 시작
 person = QuizGame()
@@ -181,7 +186,7 @@ try:
     person.menu()
 except (KeyboardInterrupt, EOFError):
         # 어느 순간에 Ctrl+C나 입력 종료가 들어와도 이쪽으로 튕겨 나옵니다.
-        print("\n\n 프로그램이 강제 중단되었습니다.")
+        print("\n 프로그램이 강제 중단되었습니다.")
 
         try:
             person.save_data()  # self 대신 생성한 game 인스턴스 사용
@@ -192,5 +197,5 @@ except (KeyboardInterrupt, EOFError):
         print(" 프로그램을 안전하게 종료합니다.")
         sys.exit(0)
         
-#모든 문제를 풀면 결과를 표시한다. <--> 퀴즈를 풀 때마다 최고 점수와 비교하고 갱신한다.
-#
+        
+#문제 나오기 전에 "문제를 출력합니다." 문구 넣기" 
