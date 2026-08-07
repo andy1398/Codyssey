@@ -184,7 +184,7 @@ json은 동시에 w/r을 하면 파일 손상/락이 걸린다. 반면 디비는
 
 # 7. 깃 clone
 
-    <img width="586" height="367" alt="Image" src="https://github.com/user-attachments/assets/551ce507-2fb1-4712-a872-f39251de4af3" />
+<img width="586" height="367" alt="Image" src="https://github.com/user-attachments/assets/551ce507-2fb1-4712-a872-f39251de4af3" />
 
 # 8. 깃 pull
 
