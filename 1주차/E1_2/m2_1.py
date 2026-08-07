@@ -78,7 +78,8 @@ class QuizGame:
         print("정답을 입력하세요: ")
         AW=self.Exception_handling()
         self.MaxPoint=self.quiz.check_answer(AW,n)
-        
+        if(self.MaxPoint<self.serverPoint):
+            self.MaxPoint=self.serverPoint
         if self.how_many==0: #목표 문제개수 풀음
             return self.menu()
         else:
@@ -132,24 +133,26 @@ class QuizGame:
             "quiz_answer": self.quiz.quiz_answer,
             "MaxPoint": self.serverPoint
         }
-        with open("state.json", "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-
+        try:
+            with open("state.json", "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+        except (IOError, OSError) as e:
+            print(f"\n[오류] 데이터 저장 실패: {e}")
+        
     def load_data(self):
         #state.json에서 불러오기
         if os.path.exists("state.json"):
             
-            with open("state.json", "r", encoding="utf-8") as f:
-                data = json.load(f)
-                
-            #self.quiz.quiz_number = data.get("quiz_number", [])
-            #self.quiz.quiz_choices = data.get("quiz_choices", [])
-            #self.quiz.quiz_answer = data.get("quiz_answer", [])
-            #아래처럼 하면 파일 손상되어도 5개 문제 보존
-            self.quiz.quiz_number = data.get("quiz_number", self.quiz.quiz_number)
-            self.quiz.quiz_choices = data.get("quiz_choices", self.quiz.quiz_choices)
-            self.quiz.quiz_answer = data.get("quiz_answer", self.quiz.quiz_answer)
-            self.serverPoint = data.get("MaxPoint", 0)
+            try:
+                with open("state.json", "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    
+                self.quiz.quiz_number = data.get("quiz_number", self.quiz.quiz_number)
+                self.quiz.quiz_choices = data.get("quiz_choices", self.quiz.quiz_choices)
+                self.quiz.quiz_answer = data.get("quiz_answer", self.quiz.quiz_answer)
+                self.serverPoint = data.get("MaxPoint", 0)
+            except (json.JSONDecodeError, IOError, OSError) as e:
+                print(f"\n[경고] state.json 읽기 오류 발생 ({e}). 기본 데이터로 진행합니다.")
     
     #문제를 몇개 풀거니?
     def how_many_quiz(self):
